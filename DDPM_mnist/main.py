@@ -18,6 +18,7 @@ if __name__ == "__main__":
     epochs = 10
     lr = 1e-3
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(torch.cuda.is_available())
 
     preprocess = transforms.ToTensor()
     dataset = torchvision.datasets.MNIST(root='./data', download=True, transform=preprocess)
