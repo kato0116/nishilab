@@ -12,15 +12,31 @@ from diffuser import Diffuser,UNet
 from show_imgs import show_images
 
 import pandas as pd
+import wandb
 
 if __name__ == "__main__":
-    img_size = 32
+    img_size   = 32
     batch_size = 128
     num_timesteps = 1000
     epochs = 300
-    lr = 1e-3
+    lr     = 1e-3
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(torch.cuda.is_available())
+    
+    # wandbのセットアップ
+    wandb.init(
+        project="ddpm_cifar10",
+        config={
+        "learning_rate": 1e-3,
+        "architecture": "DDPM",
+        "dataset": "CIFAR-10",
+        "epochs": 300,
+        }
+    )
+    wandb.alert(
+        title = "実行終了",
+        text  = "アーキテクチャ: DDPM, データセット: CIFAR10"
+    )
 
     preprocess = transforms.ToTensor()
     dataset = torchvision.datasets.CIFAR10(root='/root/data', download=True, transform=preprocess)
@@ -60,6 +76,8 @@ if __name__ == "__main__":
         show_images(images,epoch+1)
 
         loss_avg = loss_sum / cnt
+        # wandbにlogの送信
+        wandb.log({"loss":loss_avg})
         losses.append(loss_avg)
         print(f'Epoch {epoch+1} | Loss: {loss_avg}')
 
@@ -79,3 +97,4 @@ if __name__ == "__main__":
     # generate samples
     images = diffuser.sample(model)
     show_images(images,"pred")
+    wandb.finish()
