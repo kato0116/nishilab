@@ -33,10 +33,6 @@ if __name__ == "__main__":
         "epochs": 300,
         }
     )
-    wandb.alert(
-        title = "実行終了",
-        text  = "アーキテクチャ: DDPM, データセット: CIFAR10"
-    )
 
     preprocess = transforms.ToTensor()
     dataset = torchvision.datasets.CIFAR10(root='/root/data', download=True, transform=preprocess)
@@ -97,4 +93,9 @@ if __name__ == "__main__":
     # generate samples
     images = diffuser.sample(model)
     show_images(images,"pred")
+    
+    wandb.alert(
+        title = "実行終了",
+        text  = "アーキテクチャ: DDPM, データセット: CIFAR10"
+    )
     wandb.finish()
