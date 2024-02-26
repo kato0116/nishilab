@@ -23,7 +23,7 @@ if __name__ == "__main__":
     print(torch.cuda.is_available())
 
     preprocess = transforms.ToTensor()
-    dataset = torchvision.datasets.CIFAR10(root='./data', download=True, transform=preprocess)
+    dataset = torchvision.datasets.CIFAR10(root='/root/data', download=True, transform=preprocess)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     diffuser = Diffuser(num_timesteps, device=device)
