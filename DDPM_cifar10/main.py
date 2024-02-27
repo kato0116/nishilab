@@ -35,11 +35,11 @@ if __name__ == "__main__":
     )
 
     preprocess = transforms.ToTensor()
-    dataset = torchvision.datasets.CIFAR10(root='/root/data', download=True, transform=preprocess)
+    dataset    = torchvision.datasets.CIFAR10(root='/root/data', download=True, transform=preprocess)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     diffuser = Diffuser(num_timesteps, device=device)
-    model = UNet()
+    model    = UNet()
     model.to(device)
     optimizer = Adam(model.parameters(), lr=lr)
 
