@@ -46,7 +46,7 @@ if __name__ == "__main__":
     losses = []
     for epoch in range(epochs):
         loss_sum = 0.0
-        cnt = 0
+        cnt      = 0
 
         # generate samples every epoch ===================
         # images = diffuser.sample(model)
