@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def show_images(images, labels, epoch, rows=2, cols=10):
+def save_imgs(images, labels, epoch, rows=2, cols=10):
     fig = plt.figure(figsize=(cols, rows))
     i = 0
     for r in range(rows):

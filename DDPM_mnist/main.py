@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 from diffuser import Diffuser,UNet
-from show_imgs import show_images
+from nishilab.DDPM_mnist.save_imgs import save_imgs
 
 if __name__ == "__main__":
     img_size = 28
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             cnt += 1
 
         images = diffuser.sample(model)
-        show_images(images,epoch+1)
+        save_imgs(images,epoch+1)
 
         loss_avg = loss_sum / cnt
         losses.append(loss_avg)
@@ -69,4 +69,4 @@ if __name__ == "__main__":
 
     # generate samples
     images = diffuser.sample(model)
-    show_images(images,"pred")
+    save_imgs(images,"pred")

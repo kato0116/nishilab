@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 from diffuser import Diffuser,UNet
-from show_imgs import show_images
+from nishilab.DDPM_cifar10.save_imgs import save_imgs
 
 import pandas as pd
 import wandb
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             cnt += 1
 
         images = diffuser.sample(model)
-        show_images(images,epoch+1)
+        save_imgs(images,epoch+1)
 
         loss_avg = loss_sum / cnt
         # wandbにlogの送信
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     
     # generate samples
     images = diffuser.sample(model)
-    show_images(images,"pred")
+    save_imgs(images,"pred")
     
     wandb.alert(
         title = "実行終了",

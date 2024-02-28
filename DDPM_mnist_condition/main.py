@@ -70,7 +70,7 @@ if __name__ == "__main__":
             cnt += 1
 
         images, labels = diffuser.sample(model)
-        show_images(images,labels,epoch+1)
+        save_imgs(images,labels,epoch+1)
 
         loss_avg = loss_sum / cnt
         losses.append(loss_avg)
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     # generate samples
     images,labels = diffuser.sample(model)
-    show_images(images,labels,"pred")
+    save_imgs(images,labels,"pred")
     
     wandb.alert(
         title = "実行終了",
