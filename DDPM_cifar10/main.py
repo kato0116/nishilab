@@ -84,15 +84,15 @@ if __name__ == "__main__":
     # plt.savefig("/root/log/loss.png")
     
     log = {"epoch":range(epochs), "loss":losses}
-    df_log = pd.DataFrame(log)
-    df_log.to_csv('/root/log/loss.csv',index=False)
+    # df_log = pd.DataFrame(log)
+    # df_log.to_csv('/root/log/loss.csv',index=False)
     
-    model_path = '/root/weights/unet_cifar10.pth'
-    torch.save(model.state_dict(), model_path)
+    # model_path = '/root/weights/unet_cifar10.pth'
+    # torch.save(model.state_dict(), model_path)
     
-    # generate samples
-    images = diffuser.sample(model)
-    save_imgs(images,"pred")
+    # # generate samples
+    # images = diffuser.sample(model)
+    # save_imgs(images,"pred")
     
     wandb.alert(
         title = "実行終了",
