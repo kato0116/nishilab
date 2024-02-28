@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 from diffuser import Diffuser,UNet
-from show_imgs import show_images
+from nishilab.DDPM_mnist_condition.save_imgs import save_imgs
 import pandas as pd
 import wandb
 
