@@ -47,12 +47,16 @@ def save_imgs(imgs, epoch, dir_path, rows=2, cols=10):
     plt.savefig(imgs_path)
 
 def save_model(model,epoch,dir_path):
+    """
+    in
+    ===============================
+    model: モデルの重み
+    epoch: 現在のエポック数
+    dir_path: ディレクトリを指定
+    
+    out
+    ===============================
+    重み保存
+    """
     model_path = os.path.join(dir_path,"weights",f"weight_epoch_{epoch}.pth")
     torch.save(model.state_dict(), model_path)
-
-# 動作確認
-# model_name = "unet"
-# epochs   = 100
-# dir_path = "/root/volume/log"
-
-# create_folder(dir_path,model_name,epochs)
