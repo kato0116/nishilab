@@ -3,3 +3,4 @@ wandb
 log
 data
 weights
+__pycache__
