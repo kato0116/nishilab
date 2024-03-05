@@ -25,9 +25,9 @@ class CFG:
     seed          = 42
     model_name    = 'ddpm'
     dataset       = 'CelebA'
-    img_size      = 64
+    img_size      = 128
     channel       = 3
-    batch_size    = 64
+    batch_size    = 128
     epochs        = 100
     lr            = 1e-3
     T_max         = 1000
@@ -39,9 +39,8 @@ class CFG:
     save_n_model  = 3
     save_n_imgs   = 1
     wandb_num_images = 16 # wandbに送信する画像の数
-if __name__ == "__main__":
-
     
+if __name__ == "__main__":
     dir_path = os.path.join(CFG.path,"log",CFG.model_name+"_epochs_"+str(CFG.epochs)+":"+CFG.dataset)
     create_folder(dir_path)
 
@@ -57,10 +56,10 @@ if __name__ == "__main__":
     )
     
     transform = transforms.Compose([
-        transforms.Resize((64,64)),
+        transforms.Resize((CFG.img_size,CFG.img_size)),
         transforms.ToTensor(),
     ])
-    dataset    = torchvision.datasets.CelebA(root=CFG.path, download=True, transform=transform)
+    dataset    = torchvision.datasets.ImageFolder(root="/root/volume/img_align_celeba",transform=transform)
     dataloader = DataLoader(dataset, batch_size=CFG.batch_size, shuffle=True)
     diffuser   = Diffuser(CFG.T_max, device=CFG.device)
     
@@ -114,7 +113,7 @@ if __name__ == "__main__":
             save_model(model,epoch+1,dir_path)
             
     log = {"epoch":range(CFG.epochs), "loss":losses}
-    df_log = pd.DataFrame(log)
+    df_log   = pd.DataFrame(log)
     log_path = os.path.join(dir_path,'loss.csv')
     df_log.to_csv(log_path,index=False)
 
