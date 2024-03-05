@@ -70,7 +70,7 @@ if __name__ == "__main__":
     )
     
     losses = []
-    for epoch in range(CFG.epochs):
+    for epoch in range(1,CFG.epochs+1):
         # loss_sum = 0.0
         # cnt = 0
         batch_losses = []
@@ -91,24 +91,24 @@ if __name__ == "__main__":
             batch_losses.append(loss.item())
             
         images = diffuser.sample(model)    
-        if (epoch+1)%CFG.save_n_imgs == 0:
-            save_imgs(images,epoch+1,dir_path)
-        if (epoch+1)%CFG.save_n_model == 0:
-            save_model(model,epoch+1,dir_path)
-        
         # accelerator.printを使うことでメインプロセスのみprintできる
         loss_avg = np.array(batch_losses).mean()
         
         # wandbにimages,logの送信
-        wandb_images = [wandb.Image(image) for image in range(CFG.wandb_num_images)]
+        wandb_images = [wandb.Image(images[i]) for i in range(CFG.wandb_num_images)]
         wandb.log(
             {"generated_images": wandb_images, "loss":loss_avg}
             )
         
         losses.append(loss_avg)
-        print(f'Epoch {epoch+1} | Loss: {loss_avg}')
+        print(f'Epoch {epoch} | Loss: {loss_avg}')
         CFG.accelerator.print(f'Epoch: {epoch+1}\tloss: {np.array(batch_losses).mean()}')
-
+        
+        if (epoch)%CFG.save_n_imgs == 0:
+            save_imgs(images,epoch+1,dir_path)
+        if (epoch)%CFG.save_n_model == 0:
+            save_model(model,epoch+1,dir_path)
+            
     log = {"epoch":range(CFG.epochs), "loss":losses}
     df_log = pd.DataFrame(log)
     log_path = os.path.join(dir_path,'loss.csv')
