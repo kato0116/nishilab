@@ -48,7 +48,7 @@ class ConvBlock(nn.Module):
         return y
     
 class UNet(nn.Module):
-    def __init__(self, in_ch=1, time_embed_dim=100):
+    def __init__(self, in_ch=3, time_embed_dim=100):
         super().__init__()
         self.time_embed_dim = time_embed_dim
 
@@ -58,7 +58,6 @@ class UNet(nn.Module):
         self.up2 = ConvBlock(128 + 256, 128, time_embed_dim)
         self.up1 = ConvBlock(128 + 64, 64, time_embed_dim)
         self.out = nn.Conv2d(64, in_ch, 1)
-
         self.maxpool = nn.MaxPool2d(2)
         self.upsample = nn.Upsample(scale_factor=2, mode='bilinear')
 
@@ -137,7 +136,8 @@ class Diffuser:
         to_pil = transforms.ToPILImage()
         return to_pil(x)
 
-    def sample(self, model, x_shape=(20, 1, 28, 28)):
+    # def sample(self, model, x_shape=(20, 1, 28, 28)):
+    def sample(self, model, x_shape=(20, 3, 64, 64)):
         batch_size = x_shape[0]
         x = torch.randn(x_shape, device=self.device)
 

@@ -41,7 +41,8 @@ def save_imgs(imgs, epoch, dir_path, rows=2, cols=10):
     for r in range(rows):
         for c in range(cols):
             fig.add_subplot(rows, cols, i + 1)
-            plt.imshow(imgs[i], cmap='gray')
+            # plt.imshow(imgs[i], cmap='gray')
+            plt.imshow(imgs[i])
             plt.axis('off')
             i += 1
     plt.savefig(imgs_path)

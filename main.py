@@ -24,10 +24,11 @@ class CFG:
     path          = "/root/volume"
     seed          = 42
     model_name    = 'ddpm'
-    dataset       = 'mnist'
-    img_size      = 28
-    batch_size    = 256
-    epochs        = 15
+    dataset       = 'CelebA'
+    img_size      = 64
+    channel       = 3
+    batch_size    = 64
+    epochs        = 100
     lr            = 1e-3
     T_max         = 1000
     # device        = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -41,12 +42,12 @@ class CFG:
 if __name__ == "__main__":
 
     
-    dir_path = os.path.join(CFG.path,"log",CFG.model_name+"_epochs_"+str(CFG.epochs))
+    dir_path = os.path.join(CFG.path,"log",CFG.model_name+"_epochs_"+str(CFG.epochs)+":"+CFG.dataset)
     create_folder(dir_path)
 
     # wandbのセットアップ
     wandb.init(
-        project="ddpm_cifar10",
+        project="ddpm_celebA",
         config={
         "learning_rate": CFG.lr,
         "architecture":  CFG.model_name,
@@ -55,8 +56,11 @@ if __name__ == "__main__":
         }
     )
     
-    preprocess = transforms.ToTensor()
-    dataset    = torchvision.datasets.MNIST(root=CFG.path, download=True, transform=preprocess)
+    transform = transforms.Compose([
+        transforms.Resize((64,64)),
+        transforms.ToTensor(),
+    ])
+    dataset    = torchvision.datasets.CelebA(root=CFG.path, download=True, transform=transform)
     dataloader = DataLoader(dataset, batch_size=CFG.batch_size, shuffle=True)
     diffuser   = Diffuser(CFG.T_max, device=CFG.device)
     
@@ -102,7 +106,7 @@ if __name__ == "__main__":
         
         losses.append(loss_avg)
         print(f'Epoch {epoch} | Loss: {loss_avg}')
-        # CFG.accelerator.print(f'Epoch: {epoch+1}\tloss: {np.array(batch_losses).mean()}')
+        # CFG.accelerator.print(f'Epoch: {epoch}\tloss: {np.array(batch_losses).mean()}')
         
         if (epoch)%CFG.save_n_imgs == 0:
             save_imgs(images,epoch+1,dir_path)
@@ -115,7 +119,7 @@ if __name__ == "__main__":
     df_log.to_csv(log_path,index=False)
 
     # generate samples
-    images = diffuser.sample(model)
+    images = diffuser.sample(model,x_shape=(20,CFG.channel, CFG.img_size, CFG.img_size))
     save_imgs(images,"pred",dir_path)
     save_model(model,epoch+1,dir_path)
     
