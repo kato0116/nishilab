@@ -37,7 +37,7 @@ class CFG:
     device  = accelerator.device
     save_n_model  = 3
     save_n_imgs   = 1
-
+    wandb_num_images = 16 # wandbに送信する画像の数
 if __name__ == "__main__":
 
     
@@ -89,19 +89,22 @@ if __name__ == "__main__":
             optimizer.step()
             
             batch_losses.append(loss.item())
-            # loss_sum += loss.item()
-            # cnt += 1
             
-        images = diffuser.sample(model)
+        images = diffuser.sample(model)    
         if (epoch+1)%CFG.save_n_imgs == 0:
             save_imgs(images,epoch+1,dir_path)
         if (epoch+1)%CFG.save_n_model == 0:
             save_model(model,epoch+1,dir_path)
+        
         # accelerator.printを使うことでメインプロセスのみprintできる
-        # loss_avg = loss_sum / cnt
         loss_avg = np.array(batch_losses).mean()
-        # wandbにlogの送信
-        wandb.log({"loss":loss_avg})
+        
+        # wandbにimages,logの送信
+        wandb_images = [wandb.Image(image) for image in range(CFG.wandb_num_images)]
+        wandb.log(
+            {"generated_images": wandb_images, "loss":loss_avg}
+            )
+        
         losses.append(loss_avg)
         print(f'Epoch {epoch+1} | Loss: {loss_avg}')
         CFG.accelerator.print(f'Epoch: {epoch+1}\tloss: {np.array(batch_losses).mean()}')
