@@ -102,7 +102,7 @@ if __name__ == "__main__":
         
         losses.append(loss_avg)
         print(f'Epoch {epoch} | Loss: {loss_avg}')
-        CFG.accelerator.print(f'Epoch: {epoch+1}\tloss: {np.array(batch_losses).mean()}')
+        # CFG.accelerator.print(f'Epoch: {epoch+1}\tloss: {np.array(batch_losses).mean()}')
         
         if (epoch)%CFG.save_n_imgs == 0:
             save_imgs(images,epoch+1,dir_path)
