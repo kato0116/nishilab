@@ -27,8 +27,8 @@ class CFG:
     dataset       = 'CelebA'
     img_size      = 128
     channel       = 3
-    batch_size    = 128
-    epochs        = 100
+    batch_size    = 32
+    epochs        = 300
     lr            = 1e-3
     T_max         = 1000
     # device        = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
