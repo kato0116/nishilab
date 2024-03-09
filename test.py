@@ -1,3 +1,4 @@
+# http://meg.aalip.jp/python/BrainVISA_nibabel.html
 import nibabel as nib
 import numpy as np
 import matplotlib.pyplot as plt
