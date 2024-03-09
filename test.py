@@ -1,29 +1,12 @@
-import torch
-import wandb
-import shutil
-import os
+import nibabel as nib
+import numpy as np
+import matplotlib.pyplot as plt
+import math
 
-# 元のディレクトリと移動先ディレクトリのパス
-src_directory = '/root/volume/img_align_celeba/'
-dest_directory = '/root/volume/img_align_celeba/images/'
-
-# 移動先ディレクトリが存在しない場合は作成
-if not os.path.exists(dest_directory):
-    os.makedirs(dest_directory)
-
-# 元のディレクトリ内の全ファイルに対して移動処理を実行
-for filename in os.listdir(src_directory):
-    # ファイルのフルパスを取得
-    file_path = os.path.join(src_directory, filename)
-    
-    # ディレクトリ（フォルダ）でないことを確認してから移動
-    if os.path.isfile(file_path):
-        # ファイルを移動
-        shutil.move(file_path, dest_directory)
-        
-        
-# print(torch.cuda.is_available())
-# print("test")
-# wandb.init()
-# wandb.finish()
-# print("接続確認")
+path = "/root/volume/dataset/ASNR-MICCAI-BraTS2023-GLI-Challenge-TrainingData/BraTS-GLI-00121-000/BraTS-GLI-00121-000-seg.nii.gz"
+image = nib.load(path)
+img0=image.get_fdata()
+print(img0.shape)
+plt.imshow(img0[:,:,70].T,cmap='gray',origin='lower')
+plt.show()
+plt.savefig("./test.png")

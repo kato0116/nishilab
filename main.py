@@ -59,7 +59,7 @@ if __name__ == "__main__":
         transforms.Resize((CFG.img_size,CFG.img_size)),
         transforms.ToTensor(),
     ])
-    dataset    = torchvision.datasets.ImageFolder(root="/root/volume/img_align_celeba",transform=transform)
+    dataset    = torchvision.datasets.ImageFolder(root="/root/volume/dataset/img_align_celeba",transform=transform)
     dataloader = DataLoader(dataset, batch_size=CFG.batch_size, shuffle=True)
     diffuser   = Diffuser(CFG.T_max, device=CFG.device)
     
