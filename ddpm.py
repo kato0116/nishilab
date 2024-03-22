@@ -34,9 +34,30 @@ def cycle(dl):
     while True:
         for data in dl:
             yield data
-            
-a = [1,2,3]
-my_a = cycle(a)
-for _ in range(10):
-    print(next(my_a))
-    
+
+# numが平方根を持つか判定
+def has_int_squareroot(num):
+    return (math.sqrt(num)**2) == num
+
+# numをdivisorで指定されたサイズのグループに分割 ex)num:9,div:3 -> 3,3,3
+def num_to_groups(num,divisor):
+    groups = num//divisor     # グループ数
+    remainder = num % divisor # あまり
+    arr = [divisor] * groups
+    if remainder > 0:
+        arr.append(remainder)
+    return arr
+
+# imageを指定のtypeに変換
+def convert_image_to_fn(img_type,image):
+    if image.mode != img_type:
+        return image.convert(img_type)
+    return image
+
+# 0~1の値を-1~1に変換 (正規化)
+def normalize_to_neg_one_to_one(img):
+    return img*2-1
+# -1~1の値を0~1に変換
+def unnormalize_to_zero_to_one(t):
+    return (t+1)*0.5
+
